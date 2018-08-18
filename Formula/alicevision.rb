@@ -9,6 +9,7 @@ class Alicevision < Formula
   depends_on "alembic"
   depends_on "boost"
   depends_on "eigen"
+  depends_on "flann"
   depends_on "ceres-solver"
   depends_on "openexr"
   depends_on "openimageio"
