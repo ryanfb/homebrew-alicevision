@@ -6,7 +6,7 @@ class Alicevision < Formula
 
   needs :cxx11
 
-  depends_on "alembic"
+  depends_on "ryanfb/alicevision/alembic"
   depends_on "boost"
   depends_on "eigen"
   depends_on "flann"
