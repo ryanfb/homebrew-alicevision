@@ -4,8 +4,6 @@ class Alicevision < Formula
   url "https://github.com/alicevision/AliceVision/archive/v2.0.0.tar.gz"
   sha256 "b2b259893930a1003920cf4128654a056d397822369afab51f6f6985ca7fce43"
 
-  needs :cxx11
-
   depends_on "ryanfb/alicevision/alembic"
   depends_on "boost"
   depends_on "eigen"

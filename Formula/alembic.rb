@@ -4,8 +4,6 @@ class Alembic < Formula
   url "https://github.com/alembic/alembic/archive/1.7.8.tar.gz"
   sha256 "119e2cbac2b862880018e756da2219171d1e9ae7aa0ef7dc7c216d678384808e"
   
-  needs :cxx11
-
   depends_on "cmake" => :build
   depends_on "hdf5"
   depends_on "ilmbase"
