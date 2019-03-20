@@ -1,8 +1,8 @@
 class Alicevision < Formula
   desc "Photogrammetric Computer Vision Framework"
   homepage "https://alicevision.github.io"
-  url "https://github.com/alicevision/AliceVision/archive/v2.0.0.tar.gz"
-  sha256 "b2b259893930a1003920cf4128654a056d397822369afab51f6f6985ca7fce43"
+  url "https://github.com/alicevision/AliceVision/archive/v2.1.0.tar.gz"
+  sha256 "37699927b94fb0460913787af8a4c4db3b1e4b8134168cca07281782ce45fdf3"
 
   depends_on "cmake" => :build
   depends_on "boost"
@@ -66,7 +66,7 @@ end
 
 __END__
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 4e401587..7f39cad7 100644
+index 7ea64f60..03611b4a 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -181,12 +181,12 @@ endif()
@@ -77,7 +77,7 @@ index 4e401587..7f39cad7 100644
 -check_for_cxx11_compiler(CXX11_COMPILER)
 +#include(CXX11)
 +#check_for_cxx11_compiler(CXX11_COMPILER)
-
+ 
 -if(NOT CXX11_COMPILER)
 -  message(FATAL_ERROR "The compiler does not support the CXX11 standard.")
 -endif(NOT CXX11_COMPILER)
@@ -85,4 +85,16 @@ index 4e401587..7f39cad7 100644
 +#  message(FATAL_ERROR "The compiler does not support the CXX11 standard.")
 +#endif(NOT CXX11_COMPILER)
  set(CMAKE_CXX_STANDARD 11)
- set(CMAKE_CXX_STANDARD_REQUIRED ON
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ 
+diff --git a/src/aliceVision/sfm/BundleAdjustmentCeres.hpp b/src/aliceVision/sfm/BundleAdjustmentCeres.hpp
+index 6dd4367b..0b63fa62 100644
+--- a/src/aliceVision/sfm/BundleAdjustmentCeres.hpp
++++ b/src/aliceVision/sfm/BundleAdjustmentCeres.hpp
+@@ -8,6 +8,7 @@
+ #pragma once
+ 
+ #include <aliceVision/types.hpp>
++#include <aliceVision/alicevision_omp.hpp>
+ #include <aliceVision/sfm/BundleAdjustment.hpp>
+ #include <aliceVision/sfm/LocalBundleAdjustmentGraph.hpp>
