@@ -4,17 +4,17 @@ class Alicevision < Formula
   url "https://github.com/alicevision/AliceVision/archive/v2.0.0.tar.gz"
   sha256 "b2b259893930a1003920cf4128654a056d397822369afab51f6f6985ca7fce43"
 
-  depends_on "ryanfb/alicevision/alembic"
+  depends_on "cmake" => :build
   depends_on "boost"
+  depends_on "ceres-solver"
   depends_on "eigen"
   depends_on "flann"
-  depends_on "ceres-solver"
-  depends_on "openexr"
-  depends_on "openimageio"
   depends_on "geogram"
   depends_on "glpk"
+  depends_on "openexr"
+  depends_on "openimageio"
+  depends_on "ryanfb/alicevision/alembic"
   depends_on "zlib"
-  depends_on "cmake" => :build
 
   resource "osi_clp" do
     url "https://github.com/alicevision/osi_clp/archive/38ab28d1c5a53de13c8684cdc272b1deb8cef459.tar.gz"
@@ -29,11 +29,6 @@ class Alicevision < Formula
   resource "nanoflann" do
     url "https://github.com/alicevision/nanoflann/archive/cc77e17934441dc82b33fd00e0a8a1398f24c928.tar.gz"
     sha256 "c39a2c2d6faa6b693e795ce483a8aea2e8e487c19e17cc2c83cbe4961c9df963"
-  end
-
-  def caveats; <<~EOS
-    This formula currently depends on a working NVIDIA CUDA Toolkit install.
-  EOS
   end
 
   patch :DATA
@@ -57,6 +52,11 @@ class Alicevision < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+  end
+
+  def caveats; <<~EOS
+    This formula currently depends on a working NVIDIA CUDA Toolkit install.
+  EOS
   end
 
   test do
