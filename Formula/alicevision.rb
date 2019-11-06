@@ -1,8 +1,8 @@
 class Alicevision < Formula
   desc "Photogrammetric Computer Vision Framework"
   homepage "https://alicevision.github.io"
-  url "https://github.com/alicevision/AliceVision/archive/v2.1.0.tar.gz"
-  sha256 "37699927b94fb0460913787af8a4c4db3b1e4b8134168cca07281782ce45fdf3"
+  url "https://github.com/alicevision/AliceVision/archive/v2.2.0.tar.gz"
+  sha256 "157d06d472ffef29f08a781c9df82daa570a49bb009e56a2924a3bd2f555ef50"
 
   depends_on "cmake" => :build
   depends_on "boost"
@@ -42,6 +42,7 @@ class Alicevision < Formula
     args << "-DBoost_NO_BOOST_CMAKE=ON"
     args << "-DALICEVISION_USE_OPENMP:BOOL=OFF"
     args << "-DALICEVISION_USE_ALEMBIC:BOOL=ON"
+    args << "-DALICEVISION_BUILD_DOC:BOOL=OFF"
     args << "-DFLANN_INCLUDE_DIR_HINTS:PATH=#{Formula["flann"].opt_include}"
     args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
 
@@ -88,14 +89,16 @@ index 7ea64f60..03611b4a 100644
  set(CMAKE_CXX_STANDARD 11)
  set(CMAKE_CXX_STANDARD_REQUIRED ON)
  
-diff --git a/src/aliceVision/sfm/BundleAdjustmentCeres.hpp b/src/aliceVision/sfm/BundleAdjustmentCeres.hpp
-index 6dd4367b..0b63fa62 100644
---- a/src/aliceVision/sfm/BundleAdjustmentCeres.hpp
-+++ b/src/aliceVision/sfm/BundleAdjustmentCeres.hpp
-@@ -8,6 +8,7 @@
- #pragma once
- 
- #include <aliceVision/types.hpp>
-+#include <aliceVision/alicevision_omp.hpp>
- #include <aliceVision/sfm/BundleAdjustment.hpp>
- #include <aliceVision/sfm/LocalBundleAdjustmentGraph.hpp>
+diff --git a/src/software/convert/main_convertLDRToHDR.cpp b/src/software/convert/main_convertLDRToHDR.cpp
+index 68204b61..a2cc97ae 100644
+--- a/src/software/convert/main_convertLDRToHDR.cpp
++++ b/src/software/convert/main_convertLDRToHDR.cpp
+@@ -288,7 +288,7 @@ void recoverSourceImage(const image::Image<image::RGBfColor>& hdrImage, hdr::rgb
+     float offset[3];
+     for(int i=0; i<3; ++i)
+         offset[i] = std::abs(meanRecovered[i] - meanVal[i]);
+-    ALICEVISION_LOG_INFO("Offset between target source image and recovered from hdr = " << offset);
++    ALICEVISION_LOG_INFO("Offset between target source image and recovered from hdr = " << boost::lexical_cast<std::string>(offset));
+ }
+
+
