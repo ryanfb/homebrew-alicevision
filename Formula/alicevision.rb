@@ -39,6 +39,7 @@ class Alicevision < Formula
     args = std_cmake_args
 
     args << "-DCMAKE_BUILD_TYPE=Release"
+    args << "-DBoost_NO_BOOST_CMAKE=ON"
     args << "-DALICEVISION_USE_OPENMP:BOOL=OFF"
     args << "-DALICEVISION_USE_ALEMBIC:BOOL=ON"
     args << "-DFLANN_INCLUDE_DIR_HINTS:PATH=#{Formula["flann"].opt_include}"
