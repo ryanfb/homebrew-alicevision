@@ -1,8 +1,8 @@
 class Alembic < Formula
   desc "Open computer graphics interchange framework"
   homepage "http://alembic.io/"
-  url "https://github.com/alembic/alembic/archive/1.7.8.tar.gz"
-  sha256 "119e2cbac2b862880018e756da2219171d1e9ae7aa0ef7dc7c216d678384808e"
+  url "https://github.com/alembic/alembic/archive/1.7.11.tar.gz"
+  sha256 "fa3536b48e49c99915170d62907490ed0ea44259b932883626630f3cedd0a0bb"
   
   depends_on "cmake" => :build
   depends_on "hdf5"
@@ -19,6 +19,8 @@ class Alembic < Formula
       -DUSE_PYALEMBIC=OFF
       -DUSE_HDF5=ON
       -DUSE_EXAMPLES=ON
+      -DALEMBIC_ILMBASE_LINK_STATIC=ON
+      -DUSE_STATIC_HDF5=ON
     ]
     system "cmake", ".", *cmake_args
     system "make"
