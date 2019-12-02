@@ -1,9 +1,9 @@
 class Alembic < Formula
   desc "Open computer graphics interchange framework"
   homepage "http://alembic.io/"
-  url "https://github.com/alembic/alembic/archive/1.7.11.tar.gz"
-  sha256 "fa3536b48e49c99915170d62907490ed0ea44259b932883626630f3cedd0a0bb"
-  
+  url "https://github.com/alembic/alembic/archive/1.7.12.tar.gz"
+  sha256 "6c603b87c9a3eaa13618e577dd9ef5277018cdcd09ac82d3c196ad8bed6a1b48"
+
   depends_on "cmake" => :build
   depends_on "hdf5"
   depends_on "ilmbase"
