@@ -11,6 +11,7 @@ class Alicevision < Formula
   depends_on "flann"
   depends_on "geogram"
   depends_on "glpk"
+  depends_on "open-mesh"
   depends_on "openexr"
   depends_on "openimageio"
   depends_on "ryanfb/alicevision/alembic"
@@ -22,8 +23,8 @@ class Alicevision < Formula
   end
 
   resource "MeshSDFilter" do
-    url "https://github.com/alicevision/MeshSDFilter/archive/b7dfeed64be90f2eff49345cf65451b700d3a417.tar.gz"
-    sha256 "c4fe0a7f4f1694d5104781eb6bad4b9d7f8fa9562fb49ea2065d2f098e9929a3"
+    url "https://github.com/ryanfb/MeshSDFilter/archive/fa1f0c6c6e2f1c2f4ee03873d6205877603fe968.tar.gz"
+    sha256 "4604e0b8ca0835441e4deaf83d71387a7240734c5f6eadac0c78858024b40e6b"
   end
 
   resource "nanoflann" do
@@ -42,6 +43,7 @@ class Alicevision < Formula
     args << "-DBoost_NO_BOOST_CMAKE=ON"
     args << "-DALICEVISION_USE_OPENMP:BOOL=OFF"
     args << "-DALICEVISION_USE_ALEMBIC:BOOL=ON"
+    args << "-DALICEVISION_USE_MESHSDFILTER:BOOL=OFF"
     args << "-DALICEVISION_BUILD_DOC:BOOL=OFF"
     args << "-DFLANN_INCLUDE_DIR_HINTS:PATH=#{Formula["flann"].opt_include}"
     args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
@@ -68,10 +70,10 @@ end
 
 __END__
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 7ea64f60..03611b4a 100644
+index 7ea43b50..af902308 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -181,12 +181,12 @@ endif()
+@@ -195,12 +195,12 @@ endif()
  # ==============================================================================
  # Check C++11 support
  # ==============================================================================
@@ -89,6 +91,14 @@ index 7ea64f60..03611b4a 100644
  set(CMAKE_CXX_STANDARD 11)
  set(CMAKE_CXX_STANDARD_REQUIRED ON)
  
+@@ -794,6 +794,7 @@ set(ALICEVISION_INCLUDE_DIRS
+         ${CMAKE_CURRENT_SOURCE_DIR}
+         ${generatedDir}
+         ${CMAKE_CURRENT_SOURCE_DIR}/dependencies
++        ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/MeshSDFilter
+         ${LEMON_INCLUDE_DIRS}
+         ${EIGEN_INCLUDE_DIRS}
+         ${CERES_INCLUDE_DIRS}
 diff --git a/src/software/convert/main_convertLDRToHDR.cpp b/src/software/convert/main_convertLDRToHDR.cpp
 index 68204b61..a2cc97ae 100644
 --- a/src/software/convert/main_convertLDRToHDR.cpp
@@ -100,5 +110,5 @@ index 68204b61..a2cc97ae 100644
 -    ALICEVISION_LOG_INFO("Offset between target source image and recovered from hdr = " << offset);
 +    ALICEVISION_LOG_INFO("Offset between target source image and recovered from hdr = " << boost::lexical_cast<std::string>(offset));
  }
-
-
+ 
+ 
