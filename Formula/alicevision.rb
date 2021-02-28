@@ -71,7 +71,7 @@ diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 index 7ea43b50..af902308 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -195,12 +195,12 @@ endif()
+@@ -195,12 +195,19 @@ endif()
  # ==============================================================================
  # Check C++11 support
  # ==============================================================================
@@ -79,7 +79,14 @@ index 7ea43b50..af902308 100644
 -check_for_cxx11_compiler(CXX11_COMPILER)
 +#include(CXX11)
 +#check_for_cxx11_compiler(CXX11_COMPILER)
- 
++
++if(APPLE)
++  set(CMAKE_C_ARCHIVE_CREATE   "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
++  set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
++  set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
++  set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
++endif(APPLE)
+
 -if(NOT CXX11_COMPILER)
 -  message(FATAL_ERROR "The compiler does not support the CXX11 standard.")
 -endif(NOT CXX11_COMPILER)
