@@ -96,12 +96,13 @@ index 7ea43b50..af902308 100644
  set(CMAKE_CXX_STANDARD 11)
  set(CMAKE_CXX_STANDARD_REQUIRED ON)
  
-@@ -794,6 +794,7 @@ set(ALICEVISION_INCLUDE_DIRS
+@@ -794,6 +794,8 @@ set(ALICEVISION_INCLUDE_DIRS
          ${CMAKE_CURRENT_SOURCE_DIR}
          ${generatedDir}
          ${CMAKE_CURRENT_SOURCE_DIR}/dependencies
 +        ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/MeshSDFilter
          ${LEMON_INCLUDE_DIRS}
++        /usr/local/Cellar/eigen/3.3.9/include/eigen3/
          ${EIGEN_INCLUDE_DIRS}
          ${CERES_INCLUDE_DIRS}
 diff --git a/src/software/convert/main_convertLDRToHDR.cpp b/src/software/convert/main_convertLDRToHDR.cpp
