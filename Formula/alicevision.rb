@@ -4,6 +4,8 @@ class Alicevision < Formula
   url "https://github.com/alicevision/AliceVision/archive/v2.2.0.tar.gz"
   sha256 "157d06d472ffef29f08a781c9df82daa570a49bb009e56a2924a3bd2f555ef50"
 
+  option "without-cuda", "Disable CUDA support"
+
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "ceres-solver"
@@ -44,6 +46,7 @@ class Alicevision < Formula
     args << "-DALICEVISION_USE_OPENMP:BOOL=OFF"
     args << "-DALICEVISION_USE_ALEMBIC:BOOL=ON"
     args << "-DALICEVISION_USE_MESHSDFILTER:BOOL=OFF"
+    args << "-DALICEVISION_USE_CUDA:BOOL=OFF" if build.without? "cuda" 
     args << "-DALICEVISION_BUILD_DOC:BOOL=OFF"
     args << "-DFLANN_INCLUDE_DIR_HINTS:PATH=#{Formula["flann"].opt_include}"
     args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
@@ -58,11 +61,6 @@ class Alicevision < Formula
     end
   end
 
-  def caveats; <<~EOS
-    This formula currently depends on a working NVIDIA CUDA Toolkit install.
-  EOS
-  end
-
   test do
     system "#{bin}/aliceVision_cameraInit"
   end
@@ -73,7 +71,7 @@ diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 index 7ea43b50..af902308 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -195,12 +195,12 @@ endif()
+@@ -195,12 +195,19 @@ endif()
  # ==============================================================================
  # Check C++11 support
  # ==============================================================================
@@ -81,7 +79,14 @@ index 7ea43b50..af902308 100644
 -check_for_cxx11_compiler(CXX11_COMPILER)
 +#include(CXX11)
 +#check_for_cxx11_compiler(CXX11_COMPILER)
- 
++
++if(APPLE)
++  set(CMAKE_C_ARCHIVE_CREATE   "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
++  set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
++  set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
++  set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
++endif(APPLE)
+
 -if(NOT CXX11_COMPILER)
 -  message(FATAL_ERROR "The compiler does not support the CXX11 standard.")
 -endif(NOT CXX11_COMPILER)
@@ -91,12 +96,13 @@ index 7ea43b50..af902308 100644
  set(CMAKE_CXX_STANDARD 11)
  set(CMAKE_CXX_STANDARD_REQUIRED ON)
  
-@@ -794,6 +794,7 @@ set(ALICEVISION_INCLUDE_DIRS
+@@ -794,6 +794,8 @@ set(ALICEVISION_INCLUDE_DIRS
          ${CMAKE_CURRENT_SOURCE_DIR}
          ${generatedDir}
          ${CMAKE_CURRENT_SOURCE_DIR}/dependencies
 +        ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/MeshSDFilter
          ${LEMON_INCLUDE_DIRS}
++        /usr/local/Cellar/eigen/3.3.9/include/eigen3/
          ${EIGEN_INCLUDE_DIRS}
          ${CERES_INCLUDE_DIRS}
 diff --git a/src/software/convert/main_convertLDRToHDR.cpp b/src/software/convert/main_convertLDRToHDR.cpp
