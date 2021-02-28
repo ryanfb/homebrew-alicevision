@@ -4,6 +4,8 @@ class Alicevision < Formula
   url "https://github.com/alicevision/AliceVision/archive/v2.2.0.tar.gz"
   sha256 "157d06d472ffef29f08a781c9df82daa570a49bb009e56a2924a3bd2f555ef50"
 
+  option "without-cuda", "Disable CUDA support"
+
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "ceres-solver"
@@ -44,6 +46,7 @@ class Alicevision < Formula
     args << "-DALICEVISION_USE_OPENMP:BOOL=OFF"
     args << "-DALICEVISION_USE_ALEMBIC:BOOL=ON"
     args << "-DALICEVISION_USE_MESHSDFILTER:BOOL=OFF"
+    args << "-DALICEVISION_USE_CUDA:BOOL=OFF" if build.without? "cuda" 
     args << "-DALICEVISION_BUILD_DOC:BOOL=OFF"
     args << "-DFLANN_INCLUDE_DIR_HINTS:PATH=#{Formula["flann"].opt_include}"
     args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
@@ -56,11 +59,6 @@ class Alicevision < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
-  end
-
-  def caveats; <<~EOS
-    This formula currently depends on a working NVIDIA CUDA Toolkit install.
-  EOS
   end
 
   test do
